@@ -67,3 +67,42 @@ summary(fitted_lm_auto)
 
 #--------------[iii]----------------
 # In the summary the coefficient for the year predictor is 0.750773.
+
+#_________________PART D_______________________
+#______________________________________________
+# Goal: produce diagnostic plots of the linear regression fit. 
+# i. Comment on any problems you see with the fit.
+# ii. Do the residual plots suggest any unusually large outliers? 
+# iii. Does the leverage plot identify any observations with unusually high leverage?
+
+# Divide the plot window to get a better graph and have all of the plots in one window.
+# plot window with 2 rows and columns
+layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
+plot(fitted_lm_auto)
+
+#--------------[i]----------------
+
+# By examining the residual plot we can underestand two problems:
+
+# problem 1
+# In general, if a linear regression model fits the data well, the residuals should be 
+# randomly distributed around zero, with no noticeable pattern or structure. 
+# >>In this question with examining the Residual plot, it appears that there is a significant pattern. 
+# So linear model may not be the best representation of the underlying relationship in the data.
+# problem 2
+# Heteroscedasticity violates one of the assumptions of linear regression models, which is that the errors 
+# have constant variance. This can lead to biased or misleading results if not properly addressed.
+# with examining the Residual plot it appears there errors do no have constant variance.
+
+#--------------[ii]----------------
+# The residual plot indicates that the data does not contain any extreme values that 
+# deviate significantly from the rest.
+# Means that it does not suggest any unusually large outliers. Which makes us happy:)
+
+#--------------[iii]----------------
+# Observations with high leverage values are identified as those that lie far from the origin in the plot, 
+# and are considered to have the potential to strongly influence the results of a linear regression analysis. 
+# The red line in the plot represents the cutoff for high leverage values, and observations above this line 
+# are considered to have high leverage.
+# By examining the residual plot we can underestand that we have observations that strongly influence 
+# the results of a linear regression
