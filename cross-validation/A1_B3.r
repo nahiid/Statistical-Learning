@@ -24,3 +24,18 @@ y <- x - 2 * x^2 + rnorm (100)
 # So the model= Y = f(x) + error
 # We know this error is irreducible which has the mean zero and sd=1 and they have a Normal dist.
 # becuse we made it that way with rnorm function :)
+
+#_________________PART B________________________
+#_______________________________________________
+# Goal: Create a scatterplot of X against Y. 
+# i. Comment on what you find.
+
+plot(x, y, main='scatterplot of X against Y',
+   xlab='x', ylab='y', pch=19)
+
+#--------------[i]----------------
+# It obviously a quadratic function.
+# Since plot indicates a distinct parabolic pattern.
+
+#_________________PART C________________________
+#_______________________________________________
