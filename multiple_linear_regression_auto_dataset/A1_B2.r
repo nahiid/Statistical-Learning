@@ -87,7 +87,7 @@ summary(fitted_lm_auto2)
 # Divide the plot window to get a better graph and have all of the plots in one window.
 # plot window with 2 rows and columns
 layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
-plot(fitted_lm_auto)
+plot(fitted_lm_auto2)
 
 #--------------[i]----------------
 
@@ -118,4 +118,18 @@ plot(fitted_lm_auto)
 
 #_________________PART E_______________________
 #______________________________________________
+# Goal: Use the * and : symbols to fit linear regression models with
+# interaction effects. Do any interactions appear to be statistically significant?
 
+# We can combine each two with each other.
+fitted_lm_auto3 <- lm(mpg ~ cylinders + cylinders : displacement + cylinders : horsepower + 
+                     cylinders : weight + cylinders : acceleration + cylinders : year +
+                     displacement + displacement : horsepower + displacement : weight +
+                     displacement : acceleration + displacement : year +  horsepower + 
+                     horsepower : weight + horsepower : acceleration +  horsepower : year +
+                     weight + weight : acceleration +  weight : year + acceleration +
+                     acceleration : year +  year, data = modified_auto2)
+
+summary(fitted_lm_auto3)
+# We can see that some coefficients that have p-value less than 0.05 
+# but it is not that effective (these are display with * in the summary)
