@@ -40,6 +40,15 @@ cor(modified_auto)
 fitted_lm_auto <- lm(mpg ~ ., data = modified_auto)
 summary(fitted_lm_auto)
 
+# We underestood that the 'Origin' is the numerical variable but its concept is not a numerical!
+# So we decided to exclude it and then fit the model.
+# But it does not effect the quality of the model that much:)
+index <- which(names(modified_auto) == 'origin')
+modified_auto2 <- modified_auto[ , -index ]
+fitted_lm_auto2 <- lm(mpg ~ ., data = modified_auto2)
+summary(fitted_lm_auto2)
+
+
 #--------------[i]----------------
 # Due to the output of the summary the F-statistic is 252.4 which is high. and this value is measuerd only on 7 predictors.
 # and the p-value linked to the F-test is extremely small, less than 2.2e-16. 
@@ -105,4 +114,8 @@ plot(fitted_lm_auto)
 # The red line in the plot represents the cutoff for high leverage values, and observations above this line 
 # are considered to have high leverage.
 # By examining the residual plot we can underestand that we have observations that strongly influence 
-# the results of a linear regression
+# the results of a linear regression, but we do not have many large numbers.
+
+#_________________PART E_______________________
+#______________________________________________
+
