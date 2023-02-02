@@ -9,7 +9,7 @@
 # output of the function[
 #  NNpreds: vector of predictions for each entry of the vector xpred]
 
-PredictNearestNeighborsParzen1D = function(yval,xval,xpred,WindowSize)
+PredictNearestNeighborsParzen1D = function(yval, xval, xpred, WindowSize)
 {
 
     # First we should find a number of predictors to create output vector with the same size.
@@ -58,4 +58,19 @@ yobsOOS = fOOS + rnorm(nOOS)
 
 #_________________PART C________________________
 #_______________________________________________
-# Goal: 
+# Goal: 1.Parzen window approach of to estimate the responses associated with a uniform grid of predictors 
+# from −2 to 2 with step size 0.01. 
+# 2.In one scattered plot of in-sample data and the predictions associated with the grid of predictors for D = 0.1 and D = 0.5.
+
+plot(xvalIS,yobsIS,main='Parzen Window for Nearest Neighbors Prediction',xlab = 'x', ylab = 'y')
+
+# Generating x of predictions
+xpred <- seq(from=x_min, to=x_max, by = 0.01)
+
+NNpreds <- PredictNearestNeighborsParzen1D(yval=yobsIS, xval=xvalIS, xpred=xpred, WindowSize=0.1)
+lines(xpred, NNpreds, col='#f4314f')
+NNpreds <- PredictNearestNeighborsParzen1D(yval=yobsIS, xval=xvalIS, xpred=xpred, WindowSize=0.5)
+lines(xpred, NNpreds, col='#3ad6fd')
+
+# legend("bottom", legend='blue line for window size 0.5', col='#3ad6fd')
+legend(x=-2.1,y=2.09, legend=c('windowsize 0.1',  'windowsize 0.5'), col=c('#f4314f','#3ad6fd'), lty=1, bg='#fee2ff')
