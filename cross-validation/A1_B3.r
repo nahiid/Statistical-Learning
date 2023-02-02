@@ -43,17 +43,19 @@ plot(x, y, main='scatterplot of X against Y',
 # result from fitting the following four models using least squares
 
 set.seed(2022)
+x <- rnorm (100)
+y <- x - 2 * x^2 + rnorm (100)
 # Create a data frame with all predictors in all models.
-data_frame = data.frame(y,x,x^2,x^3,x^4)
+data_frame = data.frame(y, x, x^2, x^3, x^4)
 
 # We have to store all of the errors in the matrix then we could get the average of them.
 # To initialize we plug zero as the elements of the matrix. but it could be any numbers.
 # o_error stands for out of sample error
-o_error = matrix(0,nrow = n,ncol = 4)
+o_error = matrix(0, nrow=100, ncol = 4)
 
-for (i in 1:n){
+for (i in 1:100){
     # we should exclude the ith row means the ith input out of the data and use it as trained data.
-    train_data = data[-i,]
+    train_data = data_frame[-i,]
 
     # our linear regression models are fit using the lm function with the traindata data frame, 
     # with the response variable y and different predictor variables 
@@ -62,11 +64,11 @@ for (i in 1:n){
     # Fit the data with the model : Y = β0 + β1X + ϵ
     fitted_lm1 =lm(y ~ x, data=train_data)
     # Fit the data with the model : Y = β0 + β1X + β2X2 + ϵ
-    fitted_lm2 =lm(y ~ x + x^2, data=train_data)
+    fitted_lm2 =lm(y ~ x + x.2, data=train_data)
     # Fit the data with the model : Y = β0 + β1X + β2X2 + β3X3 + ϵ
-    fitted_lm3 =lm(y ~ x + x^2 + x^3, data=train_data)
+    fitted_lm3 =lm(y ~ x + x.2 + x.3, data=train_data)
     # Fit the data with the model : Y = β0 + β1X + β2X2 + β3X3 + β4X4 + ϵ
-    fitted_lm4 =lm(y ~ x + x^2 + x^3 + x^4, data=train_data)
+    fitted_lm4 =lm(y ~ x + x.2 + x.3 + x.4, data=train_data)
 
     # data$y[i] accesses the i-th element of the y column in the data data frame
     # which here is considered as output of out of sample data since i excluded from the trained data 
@@ -91,3 +93,16 @@ for (i in 1:n){
     o_error[i,4] = real_y_oos-predict4_y_oos
   
 }
+
+# Initialize zero vector for MSE with 4 elements
+MSE=rep(0,4)
+# Now we can easily compute the average of the errors for each model.
+#. i is defined! I thought it is out of the scope:/ so whenever i run the below code with i as index got a wrong answer!!
+for (j in 1:4){
+  MSE[j] = mean( o_error[,j]^2 )
+}
+MSE
+
+#_________________PART D________________________
+#_______________________________________________
+
