@@ -51,7 +51,8 @@ data_frame = data.frame(y, x, x^2, x^3, x^4)
 # o_error stands for out of sample error
 o_error = matrix(0, nrow=100, ncol = 4)
 
-for (i in 1:100){
+for (i in 1:100)
+{
     # we should exclude the ith row means the ith input out of the data and use it as trained data.
     train_data = data_frame[-i,]
 
