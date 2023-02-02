@@ -1,6 +1,3 @@
-
-
-
 #_________________PART A________________________
 #_______________________________________________
 # Goal: Generate a simulated data set
@@ -45,6 +42,7 @@ plot(x, y, main='scatterplot of X against Y',
 set.seed(2022)
 x <- rnorm (100)
 y <- x - 2 * x^2 + rnorm (100)
+
 # Create a data frame with all predictors in all models.
 data_frame = data.frame(y, x, x^2, x^3, x^4)
 
@@ -105,4 +103,87 @@ MSE
 
 #_________________PART D________________________
 #_______________________________________________
+# Goal:  Underestanding the function of setting seed (redo previous part with another seed)
+# i. Are your results the same as what you got in (c)? Why?
 
+set.seed(2023)
+x <- rnorm (100)
+y <- x - 2 * x^2 + rnorm (100)
+
+# Create a data frame with all predictors in all models.
+data_frame = data.frame(y, x, x^2, x^3, x^4)
+
+# We have to store all of the errors in the matrix then we could get the average of them.
+# To initialize we plug zero as the elements of the matrix. but it could be any numbers.
+# o_error stands for out of sample error
+o_error = matrix(0, nrow=100, ncol = 4)
+
+for (i in 1:100){
+    # we should exclude the ith row means the ith input out of the data and use it as trained data.
+    train_data = data_frame[-i,]
+
+    # our linear regression models are fit using the lm function with the traindata data frame, 
+    # with the response variable y and different predictor variables 
+    # x, x + x^2, x + x^2 + x^3, and x + x^2 + x^3 + x^4 respectively.
+
+    # Fit the data with the model : Y = β0 + β1X + ϵ
+    fitted_lm1 =lm(y ~ x, data=train_data)
+    # Fit the data with the model : Y = β0 + β1X + β2X2 + ϵ
+    fitted_lm2 =lm(y ~ x + x.2, data=train_data)
+    # Fit the data with the model : Y = β0 + β1X + β2X2 + β3X3 + ϵ
+    fitted_lm3 =lm(y ~ x + x.2 + x.3, data=train_data)
+    # Fit the data with the model : Y = β0 + β1X + β2X2 + β3X3 + β4X4 + ϵ
+    fitted_lm4 =lm(y ~ x + x.2 + x.3 + x.4, data=train_data)
+
+    # data$y[i] accesses the i-th element of the y column in the data data frame
+    # which here is considered as output of out of sample data since i excluded from the trained data 
+    # and we still in the for loop scope
+    real_y_oos = data_frame$y[i]
+
+    # Prediction using the four given models. 
+    predict1_y_oos = predict(fitted_lm1 ,data_frame)[i]
+    predict2_y_oos = predict(fitted_lm2 ,data_frame)[i]
+    predict3_y_oos = predict(fitted_lm3 ,data_frame)[i]
+    predict4_y_oos = predict(fitted_lm4 ,data_frame)[i]
+
+    # Now we calculate the errors for out of sample data and 
+    # insert the errors into the out of sample error that we have made.
+    # For the first model
+    o_error[i,1] = real_y_oos-predict1_y_oos
+    # For the second model
+    o_error[i,2] = real_y_oos-predict2_y_oos
+    # For the third model
+    o_error[i,3] = real_y_oos-predict3_y_oos
+    # For the forth model
+    o_error[i,4] = real_y_oos-predict4_y_oos
+
+}
+
+# Initialize zero vector for MSE with 4 elements
+MSE=rep(0,4)
+# Now we can easily compute the average of the errors for each model.
+#. i is defined! I thought it is out of the scope:/ so whenever i run the below code with i as index got a wrong answer!!
+for (j in 1:4){
+  MSE[j] = mean( o_error[,j]^2 )
+}
+MSE
+
+#--------------[i]----------------
+# We use another random seed so results are different since the data sets are different!
+
+#_________________PART E________________________
+#_______________________________________________
+# Not Yet
+
+#_________________PART F________________________
+#_______________________________________________
+# Goal: Comment on statistical significance of the coefficient estimates from fitting each of the models in (c) using least squares. 
+# i. Do these results agree with the conclusions drawn based on the cross-validation results?
+
+# Use summery() to comparing the results
+summary(fitted_lm1)
+summary(fitted_lm2)
+summary(fitted_lm3)
+summary(fitted_lm4)
+
+# Not Yet
