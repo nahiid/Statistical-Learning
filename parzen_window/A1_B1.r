@@ -74,3 +74,68 @@ lines(xpred, NNpreds, col='#3ad6fd')
 
 # legend("bottom", legend='blue line for window size 0.5', col='#3ad6fd')
 legend(x=-2.1,y=2.09, legend=c('windowsize 0.1',  'windowsize 0.5'), col=c('#f4314f','#3ad6fd'), lty=1, bg='#fee2ff')
+
+#_________________PART D________________________
+#_______________________________________________
+# Goal: 1.compute the corresponding in-sample MSE and out-of-sample MSE for 
+# window sizes from 0.05 to 1, with step size 0.05.
+# 2.visualize the corresponding curves in the same plot.
+
+# Creating the vector to store window sizes
+# seq() takes three arguments: the starting value (0.05), the end value (1), and the increment value (0.05)
+WindowSize_vector = seq(0.05, 1, 0.05)
+
+# Numbers of window sizes
+num_WindowSize = length(WindowSize_vector)
+
+# numeric() creates an empty numeric vector of the specified length
+# In sample MSE empty vector
+MSE_IS = numeric(num_WindowSize)
+# out of sample MSE empty vector
+MSE_OS = numeric(num_WindowSize)
+
+
+for(i in 1:num_WindowSize) 
+{ 
+    WindowSize = WindowSize_vector[i]
+
+    # Prediction using the defined function Nearest Neighbours with Parzen window
+    NNpreds_IS = PredictNearestNeighborsParzen1D(yval=yobsIS,xval=xvalIS,xpred=xvalIS,WindowSize=WindowSize)
+    NNpreds_OS = PredictNearestNeighborsParzen1D(yval=yobsIS,xval=xvalIS,xpred=xvalOOS,WindowSize=WindowSize)
+
+    # Calculating In Sample MSE
+    MSE_IS[i] = mean( (NNpreds_IS - yobsIS)^2 )
+    # Calculating Out of Sample MSE
+    MSE_OS[i] = mean( (NNpreds_OS - yobsOOS)^2 )
+}
+
+
+# Ignore these below lines from 113 to 135 since it fails and IDK why I got error for that!
+# plot(WindowSize_vector, 
+#     # cbind() binds the two vectors into a single matrix that can be plotted. 
+#     cbind(MSE_IS, MSE_OS), 
+#     main='Training vs Validation MSE',
+#     ylim = c(0,5), 
+#     xlab='Window Size',
+#     ylab='MSE', 
+#     # The value "n" for type creates a plot without any plotted data, 
+#     # which allows us to add data to the plot using other functions, such as 'lines'.
+#     type='n', 
+#     col=c("#ff2bd5", "#ffb52d"), 
+#     # pch symbols for the plotted points.
+#     pch=1,
+#     # lty used to specify line types for the plotted points.
+#     lty=1,
+#     # line width
+#     lwd=2,
+#     legend = c("MSE_IS", "MSE_OS"),
+#     # box type
+#     bty="l",
+#     # plot type
+#     pty="o")
+
+# Comparing In sample MSE with Out Of Sample MSE 
+# Visualizing them in the same plot
+plot(WindowSize_vector, MSE_IS, main = 'In sample MSE and Out of Sample MSE', ylim = c(0,5), xlab = 'Window Size', ylab = 'MSE', type = 'n')
+lines(WindowSize_vector, MSE_IS, col = '#00ae14', type = "p", pch = 1)
+lines(WindowSize_vector, MSE_OS, col = '#fc34ff', type = "p", pch = 1)
