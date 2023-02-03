@@ -73,7 +73,7 @@ NNpreds <- PredictNearestNeighborsParzen1D(yval=yobsIS, xval=xvalIS, xpred=xpred
 lines(xpred, NNpreds, col='#3ad6fd')
 
 # legend("bottom", legend='blue line for window size 0.5', col='#3ad6fd')
-legend(x=-2.1,y=2.09, legend=c('windowsize 0.1',  'windowsize 0.5'), col=c('#f4314f','#3ad6fd'), lty=1, bg='#fee2ff')
+legend(x=-2.1,y=2.09, legend=c('windowsize 0.1',  'windowsize 0.5'), col=c('#f4314f','#3ad6fd'), lty=1, bg='#feebff')
 
 #_________________PART D________________________
 #_______________________________________________
@@ -139,3 +139,29 @@ for(i in 1:num_WindowSize)
 plot(WindowSize_vector, MSE_IS, main = 'In sample MSE and Out of Sample MSE', ylim = c(0,5), xlab = 'Window Size', ylab = 'MSE', type = 'n')
 lines(WindowSize_vector, MSE_IS, col = '#00ae14', type = "p", pch = 1)
 lines(WindowSize_vector, MSE_OS, col = '#fc34ff', type = "p", pch = 1)
+
+#_________________PART E________________________
+#_______________________________________________
+# Goal: Select the best value of D (automatically, not manually). Explain the criterion behind your choice.
+
+# So we have to choose the window size which gives us the minimum value for Out of Sample MSE
+# Since Out Of Sample MSE matters!
+# But Why We are Finding the min of the out of sample MSE not In sample MSE?
+# The answer explained from the line 161 (from the slide of lecture 2)
+Best_WindowSize = WindowSize_vector[which(MSE_OS==min(MSE_OS))]
+
+# cat() : display the value of a variable and a message next to it
+cat("The best window size is: ", Best_WindowSize, "\n")
+
+# Display the Best Window Size (i.e where the Out of Sample MSE minimized) on the plot.
+abline(v = Best_WindowSize, col='#ff0000')
+legend(x=0.2, y=5, legend=c('In Sample MSE', 'Out Of Sample MSE', 'Best Window Size'), col=c('#00ae14','#fc34ff', '#ff0000'), lty=1, bg='#feebff')
+
+
+# Why We are Finding the min of the out of sample MSE not In sample MSE?
+# Selecting the value of K which minimizes the training
+# (in-sample) MSE is inappropriate:
+# This would always lead to choosing the most flexible model which will “match” the data more closely.
+# This would lead to systematic overfitting.
+# In general, I We do not only care about how well the method works on the training data.
+# We are interested in the accuracy of the predictions that we obtain when we apply our method to previously unseen (out-of-sample) data.
