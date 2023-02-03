@@ -100,7 +100,8 @@ MSE=rep(0,4)
 for (j in 1:4){
   MSE[j] = mean( o_error[,j]^2 )
 }
-MSE
+LOOCV_MSE_C <- MSE
+LOOCV_MSE_C
 
 #_________________PART D________________________
 #_______________________________________________
@@ -174,7 +175,28 @@ MSE
 
 #_________________PART E________________________
 #_______________________________________________
-# Not Yet
+# Goal: Which of the models in (c) had the smallest LOOCV error? Is this what you expected? Explain your answer.
+
+# Here is the LOOCV error for the model in part C
+LOOCV_MSE_C
+
+"""
+  LOOCV error for the model in part C as follows>> 
+  LOOCV_MSE_C for the model 1 (Y = β0 + β1X + ϵ): 
+  12.258464  
+  LOOCV_MSE_C for the model 2 (Y = β0 + β1X + β2X2 + ϵ): 
+  1.097851  
+  LOOCV_MSE_C for the model 3(Y = β0 + β1X + β2X2 + β3X3 + ϵ): 
+  1.072996  
+  LOOCV_MSE_C for the model 4 (Y = β0 + β1X + β2X2 + β3X3 + β4X4 + ϵ): 
+  1.080529
+
+  The first model has a larger error compared to the other models due to its linear structure, 
+  and the scatter plot of data (observed in part B) indicates that the data has a quadratic trend.
+  which makes this linear model less flexible and unable to fit the data well. 
+  So the last three MSEs have the smaller value which is good! 
+  The trend for data is quadratic Although the model 3 and 4 are not quadratic but they have small MSE which is good:)
+"""
 
 #_________________PART F________________________
 #_______________________________________________
@@ -187,4 +209,76 @@ summary(fitted_lm2)
 summary(fitted_lm3)
 summary(fitted_lm4)
 
-# Not Yet
+"""
+>> summary(fitted_lm1)
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.6917     0.2777  -6.092 2.25e-08 ***
+x             0.4134     0.2815   1.468    0.145    
+
+Residual standard error: 2.753 on 97 degrees of freedom
+Multiple R-squared:  0.02175,	Adjusted R-squared:  0.01166 
+F-statistic: 2.156 on 1 and 97 DF,  p-value: 0.1452
+
+>> summary(fitted_lm2)
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.11031    0.11578   0.953    0.343    
+x            0.95718    0.09820   9.747  5.2e-16 ***
+x.2         -1.89764    0.06996 -27.126  < 2e-16 ***
+
+Residual standard error: 0.9403 on 96 degrees of freedom
+Multiple R-squared:  0.8871,	Adjusted R-squared:  0.8847 
+F-statistic: 377.1 on 2 and 96 DF,  p-value: < 2.2e-16
+
+>> summary(fitted_lm3)
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.10423    0.11986   0.870    0.387    
+x            0.98637    0.16976   5.810 8.28e-08 ***
+x.2         -1.88991    0.07926 -23.843  < 2e-16 ***
+x.3         -0.01076    0.05089  -0.211    0.833    
+---
+
+Residual standard error: 0.945 on 95 degrees of freedom
+Multiple R-squared:  0.8872,	Adjusted R-squared:  0.8836 
+F-statistic: 248.9 on 3 and 95 DF,  p-value: < 2.2e-16
+
+>> summary(fitted_lm4)
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.082862   0.143013   0.579    0.564    
+x            0.960897   0.193772   4.959 3.14e-06 ***
+x.2         -1.832481   0.221965  -8.256 9.26e-13 ***
+x.3          0.002669   0.070438   0.038    0.970    
+x.4         -0.013051   0.047086  -0.277    0.782    
+---
+
+Residual standard error: 0.9496 on 94 degrees of freedom
+Multiple R-squared:  0.8872,	Adjusted R-squared:  0.8824 
+F-statistic: 184.9 on 4 and 94 DF,  p-value: < 2.2e-16
+
+"""
+
+"""
+
+A large F-statistic indicates a strong relationship between the independent variables and the dependent variable, 
+while a small F-statistic indicates a weak relationship.
+So the higher F-statistic the better model. 
+In the summerys we can see that the F-statistic for the second model is the highest.
+That makes sense since we know that our data has the quadratic trend and the second model is quadratic too!
+
+The coefficient estimates for the last three models are very alike, 
+in compare to the first model that we have talked about it in a previous part
+which confirms the earlier cross-validation results.
+Therefore we again underestand that the first model is not appropriate for our data.
+
+In last three models we can see that the first two predictors are statistical significance. (They are shown as *** in the summary output)
+Which again make sense. The worst model (the first model) do not have these *** for predictors since it is not fit the model well!
+
+So The results agree with Cross Validation results and make sence due to our data.
+"""
