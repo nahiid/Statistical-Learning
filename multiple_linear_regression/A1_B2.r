@@ -10,7 +10,8 @@ library(GGally)
 plot(Auto, pch=20, cex=1.5, col='steelblue')
 
 # Method 2: Use ggplot2 and GGally packages
-ggpairs(Auto, cardinality_threshold = 304)
+# I commented it cause it takes time to run:)
+# ggpairs(Auto, cardinality_threshold = 304)
 
 # Method 3: Base R
 pairs(Auto);
@@ -50,29 +51,33 @@ summary(fitted_lm_auto2)
 
 
 #--------------[i]----------------
-# Due to the output of the summary the F-statistic is 252.4 which is high. and this value is measuerd only on 7 predictors.
-# and the p-value linked to the F-test is extremely small, less than 2.2e-16. 
-# Therefore we can conclude that there is a strong relationship between the predictors and the response
-# So we reject null hypothesis.
+"""
+Due to the output of the summary the F-statistic is 252.4 which is high. and this value is measuerd only on 7 predictors.
+and the p-value linked to the F-test is extremely small, less than 2.2e-16. 
+Therefore we can conclude that there is a strong relationship between the predictors and the response
+So we reject null hypothesis.
 
-# Explain of F-statistic
-# The F-statistic provides a test of the null hypothesis that all coefficients in the regression model are equal to zero 
-# (i.e., that there is no relationship between the predictors and the response variable). 
-# A high F-statistic indicates that the model is a good fit to the data
+Explain of F-statistic
+The F-statistic provides a test of the null hypothesis that all coefficients in the regression model are equal to zero 
+(i.e., that there is no relationship between the predictors and the response variable). 
+A high F-statistic indicates that the model is a good fit to the data
 
-# Explain of p-value
-# The p-value assesses the significance of each predictor in explaining the response variation in a regression model.
-# A low p-value (typically less than 0.05) indicates that there is strong evidence against the null hypothesis 
-# that the corresponding coefficient is equal to zero, and suggests that the predictor is significantly related to the response. 
-# i.e a low p-value indicates that the predictor has a non-zero effect on the response. A high p-value (greater than 0.05) suggests 
-# that there is not enough evidence to conclude that the predictor is significantly related to the response,
-# and that the corresponding coefficient may be equal to zero.
+Explain of p-value
+The p-value assesses the significance of each predictor in explaining the response variation in a regression model.
+A low p-value (typically less than 0.05) indicates that there is strong evidence against the null hypothesis 
+that the corresponding coefficient is equal to zero, and suggests that the predictor is significantly related to the response. 
+i.e a low p-value indicates that the predictor has a non-zero effect on the response. A high p-value (greater than 0.05) suggests 
+that there is not enough evidence to conclude that the predictor is significantly related to the response,
+and that the corresponding coefficient may be equal to zero.
+"""
 
 #--------------[ii]----------------
-# For finding which predictors has statistically significant relationship to the response 
-# we should look for the predictors that have smallest p-value. due to a summery output 
-# we underestand 'origin', 'weight', 'year' have the extermly small p-value.
-# So these predictors have statistically significant relationship to the response.
+"""
+For finding which predictors has statistically significant relationship to the response 
+we should look for the predictors that have smallest p-value. due to a summery output 
+we underestand 'origin', 'weight', 'year' have the extermly small p-value.
+So these predictors have statistically significant relationship to the response.
+"""
 
 #--------------[iii]----------------
 # In the summary the coefficient for the year predictor is 0.750773.
@@ -90,29 +95,33 @@ layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
 plot(fitted_lm_auto2)
 
 #--------------[i]----------------
-
-# By examining the residual plot we can underestand two problems:
-
-# problem 1
-# In general, if a linear regression model fits the data well, the residuals should be 
-# randomly distributed around zero, with no noticeable pattern or structure. 
-# >>In this question with examining the Residual plot, it appears that there is a significant pattern. 
-# So linear model may not be the best representation of the underlying relationship in the data.
-# problem 2
-# Heteroscedasticity violates one of the assumptions of linear regression models, which is that the errors 
-# have constant variance. This can lead to biased or misleading results if not properly addressed.
-# with examining the Residual plot it appears there errors do no have constant variance.
+"""
+By examining the residual plot we can underestand two problems:
+problem 1
+In general, if a linear regression model fits the data well, the residuals should be 
+randomly distributed around zero, with no noticeable pattern or structure. 
+>>In this question with examining the Residual plot, it appears that there is a significant pattern. 
+So linear model may not be the best representation of the underlying relationship in the data.
+problem 2
+Heteroscedasticity violates one of the assumptions of linear regression models, which is that the errors 
+have constant variance. This can lead to biased or misleading results if not properly addressed.
+with examining the Residual plot it appears there errors do no have constant variance.
+"""
 
 #--------------[ii]----------------
-# The residual plot indicates that the data does not contain any extreme values that 
-# deviate significantly from the rest.
-# Means that it does not suggest any unusually large outliers. Which makes us happy:)
+"""
+The residual plot indicates that the data does not contain any extreme values that 
+deviate significantly from the rest.
+Means that it does not suggest any unusually large outliers. Which makes us happy:)
+"""
 
 #--------------[iii]----------------
-# Observations with high leverage values are identified as those that lie far from the origin in the plot, 
-# and are considered to have the potential to strongly influence the results of a linear regression analysis. 
-# The red line in the plot represents the cutoff for high leverage values, and observations above this line 
-# are considered to have high leverage.4
+"""
+Observations with high leverage values are identified as those that lie far from the origin in the plot, 
+and are considered to have the potential to strongly influence the results of a linear regression analysis. 
+The red line in the plot represents the cutoff for high leverage values, and observations above this line 
+are considered to have high leverage.4
+"""
 
 #_________________PART E_______________________
 #______________________________________________
@@ -134,6 +143,36 @@ summary(fitted_lm_auto3)
 
 #_________________PART F_______________________
 #______________________________________________
-# Goal: Try a few different transformations of the variables, such as log(X), √X, X2. 
+# Goal: Try a few different transformations of the variables, such as log(X), √X, X^2. 
 # Comment on your findings.
+
+x <- c(modified_auto2$weight)
+
+fitted_lm_auto_log <- lm(mpg ~ log(x), data = modified_auto)
+layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
+plot(fitted_lm_auto_log, main='fitted_lm_auto_log')
+summary(fitted_lm_auto_log)
+# In this case, it can be seen that both the intercept and the log(x) coefficient 
+# are significantly different from zero (p-values are close to zero), 
+# which indicates a strong linear relationship between the predictor and the response variable.
+# F-statistic: 967.3 which is high!
+# The independent variable has a significant effect on the dependent variabl
+
+fitted_lm_auto_sqrt <- lm(mpg ~ sqrt(x), data = modified_auto)
+layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
+plot(fitted_lm_auto_sqrt, main='fitted_lm_auto_sqrt')
+summary(fitted_lm_auto_sqrt)
+# Based on the summary output of the fitted_lm_auto_sqrt model, 
+# we can conclude that the model fits the data well, based on the high F-Statistic value. 
+# The sqrt(x) predictor has a significant effect on the mpg response variable, based on the low p-value of the coefficient.
+
+fitted_lm_auto_squared <- lm(mpg ~ I(x^2), data = modified_auto)
+layout(matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE))
+plot(fitted_lm_auto_squared, main='fitted_lm_auto_squared')
+summary(fitted_lm_auto_squared)
+# In the fitted_lm_auto_squared model, the F statistic is significant (p-value close to 0) and the coefficient for I(x^2) is also significant 
+# (p-value close to 0), indicating that the model fits the data well 
+# and the relationship between mpg and weight^2 is significant.
+
+# Comparing these three indicates that the first one is better due to a higher F statistic.
 
