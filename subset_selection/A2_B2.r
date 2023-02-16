@@ -137,3 +137,11 @@ which.min(bic)
 # So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
 
 
+#--------------[i]----------------
+#Comparing coefficients of 3 used methods for best models #3 and #6 individually
+
+print ("coefficients of model #3 with the best subset selection, forward stepwise selection, backward stepwise selection")
+c(coef(reg_fitted,3), coef(forward_reg_fitted,3), coef(backward_reg_fitted,3))
+
+print ("coefficients of model #6 with the best subset selection, forward stepwise selection, backward stepwise selection")
+c(coef(reg_fitted,6), coef(forward_reg_fitted,6), coef(backward_reg_fitted,6))
