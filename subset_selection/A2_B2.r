@@ -51,7 +51,7 @@ library(leaps)
 # The response variable y is regressed against all the predictor variables in the data frame 
 # '.' is used to indicate "all other columns" 
 # The nvmax parameter is set to 10 to specify that up to 10 predictor variables can be used in the model. 
-fitted_model = regsubsets(y~.,generated_data,nvmax=10)
+reg_fitted = regsubsets(y~., generated_data, nvmax=10)
 
 #--------------[i]----------------
 # What is the best model obtained according to Cp, BIC, and adjusted R2?
@@ -60,7 +60,8 @@ fitted_model = regsubsets(y~.,generated_data,nvmax=10)
 # the adjusted R^2, the Cp statistic (also known as the Mallows' Cp), and the Bayesian information criterion (BIC).
 
 # The summary includes the adjusted R^2, the Cp statistic, and the BIC for all possible combinations of predictor variables
-summary = summary(fitted_model)
+summary = summary(reg_fitted)
+summary
 
 # The index of the model with the highest adjusted R^2 is determined using the which.max() function on the adjr2 component of the summary object.
 adjr2 = summary$adjr2
@@ -95,5 +96,44 @@ plot(summary$bic, xlab='Number of Variables', ylab='BIC', type='l')
 points(which.min(summary$bic), summary$bic[which.min(summary$bic)], col='#d13ed1', cex=2, pch=20)
 
 # Report the coefficients of the best model obtained.
-cat ("coefficients of model 3", coef(fitted_model,3))
-cat ("coefficients of model 6", coef(fitted_model,6))
+cat ("coefficients of model 3", coef(reg_fitted,3))
+cat ("coefficients of model 6", coef(reg_fitted,6))
+
+#_________________PART D_______________________
+#______________________________________________
+# Goal: Repeat (c) using forward stepwise selection and also using backwards stepwise selection. 
+# How does your answer compare to the results in (c)?
+
+# Performing forward stepwise selection
+forward_reg_fitted =regsubsets(Y~., method="forward", data=generated_data, nvmax=10)
+
+# The summary includes the adjusted R^2, the Cp statistic, and the BIC for all possible combinations of predictor variables
+summary = summary(forward_reg_fitted)
+summary
+
+# The index of the model with the highest adjusted R^2 is determined using the which.max() function on the adjr2 component of the summary object.
+adjr2 = summary$adjr2
+which.max(adjr2)
+cp = summary$cp
+which.min(cp)
+bic = summary$bic
+which.min(bic)
+# So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
+
+# Performing backwards stepwise selection
+backward_reg_fitted =regsubsets(Y~., method="backward", data=generated_data, nvmax=10)
+
+# The summary includes the adjusted R^2, the Cp statistic, and the BIC for all possible combinations of predictor variables
+summary(backward_reg_fitted)
+summary
+
+# The index of the model with the highest adjusted R^2 is determined using the which.max() function on the adjr2 component of the summary object.
+adjr2 = summary$adjr2
+which.max(adjr2)
+cp = summary$cp
+which.min(cp)
+bic = summary$bic
+which.min(bic)
+# So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
+
+
