@@ -1,0 +1,6 @@
+
+#mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+#oooooooooooooooooo Problem B1 ooooooooooooooooooooo
+#mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+# Goal: Validate MSELoocv closed formula
