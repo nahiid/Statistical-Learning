@@ -145,3 +145,52 @@ c(coef(reg_fitted,3), coef(forward_reg_fitted,3), coef(backward_reg_fitted,3))
 
 print ("coefficients of model #6 with the best subset selection, forward stepwise selection, backward stepwise selection")
 c(coef(reg_fitted,6), coef(forward_reg_fitted,6), coef(backward_reg_fitted,6))
+
+
+#_________________PART E_______________________
+#______________________________________________
+# Goal: fit a lasso model to the simulated data. Use cross-validation to select the optimal value of λ. 
+# Create plots of the cross-validation error as a function of λ.
+# Report the resulting coefficient estimates, and discuss the results obtained.
+
+set.seed((2022))
+
+library(glmnet)
+x <- as.matrix(generated_data[, -1])
+y <- generated_data$y
+
+# Define the sequence of lambda values to use
+lambda_seq <- 10^seq(10, -2, length = 100)
+
+# Fit the Lasso regression model
+lasso_model <- cv.glmnet(x, y, alpha = 1, lambda = lambda_seq)
+
+# Perform cross-validation and obtain the mean squared error for each value of lambda
+cvfit <- cv.glmnet(x, y, alpha = 1)
+
+# The best value of lambda that minimizes the mean squared error
+best_lam <- cvfit$lambda.min
+
+# Fit the Lasso model using the optimal lambda value
+lasso_model <- glmnet(x, y, alpha = 1, lambda = best_lam)
+
+# Plot the mean squared error versus log(lambda)
+plot(cvfit, type = "p", xlab = "Log(lambda)", ylab = "Mean Squared Error")
+
+# Extract the coefficients for the optimal Lasso model
+lasso_coefs <- coef(lasso_model, s = best_lam)
+lasso_coefs
+
+# Discuss the results obtained.
+"""
+The output shows that the intercept, X1, X2, and X3 have non-zero coefficients while the coefficients for X4 to X10 are zero.
+This means that the Lasso model has identified these four predictors, intercept, X1, X2, and X3, 
+as the most important predictors for explaining the variation in the response variable. 
+The magnitude and sign of the non-zero coefficients give us information about the direction 
+and strength of the relationship between each predictor and the response variable.
+For example, a positive coefficient for X1 means that an increase in the value of X1 is associated with an increase in the response variable,
+while a negative coefficient for X3 means that an increase in the value of X3 is associated with a decrease in the response variable.
+"""
+
+
+
