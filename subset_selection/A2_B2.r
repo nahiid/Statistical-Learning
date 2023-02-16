@@ -5,7 +5,7 @@
 
 # Goal: In this problem, we will generate simulated data, and use this data to perform best subset selection
 
-set.seed(17)
+set.seed(2022)
 
 #_________________PART A_______________________
 #______________________________________________
@@ -21,7 +21,7 @@ e = rnorm(100)
 # Goal:  Generate a response vector Y of length n = 100 according to the model Y = β0 + β1X + β2X2 + β3X3 + ϵ,
 # where β0, β1, β2, and β3 are constants.
 
-beta =c(2,1,-0.2,0.5)
+beta =c(0.1, 0.2, 0.3, 0.9)
 y = beta[1] + beta[2]*x + beta[3]*x^2 + beta[4]*x^3 + e
 
 #_________________PART C_______________________
@@ -71,7 +71,7 @@ which.min(cp)
 bic = summary$bic
 which.min(bic)
 
-# So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
+# So base on the above results the best models is the third (Model #3)
 # Then we plot the models to visualize
 
 #--------------[ii]----------------
@@ -97,12 +97,12 @@ points(which.min(summary$bic), summary$bic[which.min(summary$bic)], col='#d13ed1
 
 # Report the coefficients of the best model obtained.
 cat ("coefficients of model 3", coef(reg_fitted,3))
-cat ("coefficients of model 6", coef(reg_fitted,6))
 
 #_________________PART D_______________________
 #______________________________________________
 # Goal: Repeat (c) using forward stepwise selection and also using backwards stepwise selection. 
 # How does your answer compare to the results in (c)?
+set.seed(2022)
 
 # Performing forward stepwise selection
 forward_reg_fitted =regsubsets(Y~., method="forward", data=generated_data, nvmax=10)
@@ -118,13 +118,13 @@ cp = summary$cp
 which.min(cp)
 bic = summary$bic
 which.min(bic)
-# So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
+# So base on the above results the best models are the first model and the second model (Model #1 and Model #2)
 
 # Performing backwards stepwise selection
 backward_reg_fitted =regsubsets(Y~., method="backward", data=generated_data, nvmax=10)
 
 # The summary includes the adjusted R^2, the Cp statistic, and the BIC for all possible combinations of predictor variables
-summary(backward_reg_fitted)
+summary = summary(backward_reg_fitted)
 summary
 
 # The index of the model with the highest adjusted R^2 is determined using the which.max() function on the adjr2 component of the summary object.
@@ -134,18 +134,19 @@ cp = summary$cp
 which.min(cp)
 bic = summary$bic
 which.min(bic)
-# So base on the above results the best models are the third model and the 6th model (Model #3 and Model #6)
-
+# So base on the above results the best models are the first model and the second model (Model #1 and Model #2)
 
 #--------------[i]----------------
-#Comparing coefficients of 3 used methods for best models #3 and #6 individually
+#Comparing coefficients of 3 used methods for best models #1 and #2 and #3 individually
+
+print ("coefficients of model #1 with the best subset selection, forward stepwise selection, backward stepwise selection")
+c(coef(reg_fitted,1), coef(forward_reg_fitted,1), coef(backward_reg_fitted,1))
+
+print ("coefficients of model #2 with the best subset selection, forward stepwise selection, backward stepwise selection")
+c(coef(reg_fitted,2), coef(forward_reg_fitted,2), coef(backward_reg_fitted,2))
 
 print ("coefficients of model #3 with the best subset selection, forward stepwise selection, backward stepwise selection")
 c(coef(reg_fitted,3), coef(forward_reg_fitted,3), coef(backward_reg_fitted,3))
-
-print ("coefficients of model #6 with the best subset selection, forward stepwise selection, backward stepwise selection")
-c(coef(reg_fitted,6), coef(forward_reg_fitted,6), coef(backward_reg_fitted,6))
-
 
 #_________________PART E_______________________
 #______________________________________________
@@ -153,7 +154,7 @@ c(coef(reg_fitted,6), coef(forward_reg_fitted,6), coef(backward_reg_fitted,6))
 # Create plots of the cross-validation error as a function of λ.
 # Report the resulting coefficient estimates, and discuss the results obtained.
 
-set.seed((2022))
+set.seed(2022)
 
 library(glmnet)
 x <- as.matrix(generated_data[, -1])
@@ -183,14 +184,103 @@ lasso_coefs
 
 # Discuss the results obtained.
 """
-The output shows that the intercept, X1, X2, and X3 have non-zero coefficients while the coefficients for X4 to X10 are zero.
-This means that the Lasso model has identified these four predictors, intercept, X1, X2, and X3, 
+The output shows that the intercept, X1, X2, X3, X4, X5, X6 have non-zero coefficients while the coefficients for X4 to X10 are zero.
+This means that the Lasso model has identified these seven predictors, intercept, X1, X2, X3, X4, X5, X6
 as the most important predictors for explaining the variation in the response variable. 
 The magnitude and sign of the non-zero coefficients give us information about the direction 
 and strength of the relationship between each predictor and the response variable.
-For example, a positive coefficient for X1 means that an increase in the value of X1 is associated with an increase in the response variable,
-while a negative coefficient for X3 means that an increase in the value of X3 is associated with a decrease in the response variable.
+For example, a positive coefficient for X1 means that an increase in the value of X1 is associated with an increase in the response variable.
 """
 
+#_________________PART E_______________________
+#______________________________________________
+# Goal: generate a response vector Y according to the model
+# Y = β0 + β7X7 + ϵ, and perform best subset selection and the lasso. 
+# Discuss the results obtained.
 
+set.seed(2022)
+n = 100
+x = rnorm(100)
+e = rnorm(100)
 
+beta =c(0.1, 0.2, 0.3, 0.9, 0.4, 0.5, 0.6)
+y = beta[1] + beta[7] * x^7 + e
+
+# Insert X and Y in a matrix
+data_matrix = y
+# We have 10 predictors so i in 1:10
+# The process involves generating a matrix of data with all possible combinations of predictor variables 
+# (up to a maximum of 10), and fitting a linear regression model on each combination. 
+# Therefore we should create this matrix
+for (i in 1:10){
+  data_matrix = cbind(data_matrix, x^i)
+}
+
+# Create data frame
+generated_data = data.frame(data_matrix)
+names(generated_data) = c('y','x1','x2','x3','x4','x5','x6','x7','x8','x9','x10')
+# generated_data now contains 'y','x1','x2','x3','x4','x5','x6','x7','x8','x9','x10'
+
+############ best subset selection ##################
+#####################################################
+# Performing best subset selection
+# Using regsubsets() built-in function from leaps lib in r
+library(leaps)
+# The response variable y is regressed against all the predictor variables in the data frame 
+# '.' is used to indicate "all other columns" 
+# The nvmax parameter is set to 10 to specify that up to 10 predictor variables can be used in the model. 
+reg_fitted = regsubsets(y~., generated_data, nvmax=10)
+
+# The best models are selected based on three different criteria: 
+# the adjusted R^2, the Cp statistic (also known as the Mallows' Cp), and the Bayesian information criterion (BIC).
+
+# The summary includes the adjusted R^2, the Cp statistic, and the BIC for all possible combinations of predictor variables
+summary = summary(reg_fitted)
+summary
+
+# The index of the model with the highest adjusted R^2 is determined using the which.max() function on the adjr2 component of the summary object.
+adjr2 = summary$adjr2
+which.max(adjr2)
+cp = summary$cp
+which.min(cp)
+bic = summary$bic
+which.min(bic)
+
+# So base on the above results the best models are the first model and the 4th model (Model #1 and Model #4)
+
+####### LASSO ###############
+#############################
+library(glmnet)
+x <- as.matrix(generated_data[, -1])
+y <- generated_data$y
+
+# Define the sequence of lambda values to use
+lambda_seq <- 10^seq(10, -2, length = 100)
+
+# Fit the Lasso regression model
+lasso_model <- cv.glmnet(x, y, alpha = 1, lambda = lambda_seq)
+
+# Perform cross-validation and obtain the mean squared error for each value of lambda
+cvfit <- cv.glmnet(x, y, alpha = 1)
+
+# The best value of lambda that minimizes the mean squared error
+best_lam <- cvfit$lambda.min
+
+# Fit the Lasso model using the optimal lambda value
+lasso_model <- glmnet(x, y, alpha = 1, lambda = best_lam)
+
+# Plot the mean squared error versus log(lambda)
+plot(cvfit, type = "p", xlab = "Log(lambda)", ylab = "Mean Squared Error")
+
+# Extract the coefficients for the optimal Lasso model
+lasso_coefs <- coef(lasso_model, s = best_lam)
+lasso_coefs
+
+"""
+The output shows that the intercept, X5, X7, X9 have non-zero coefficients while the coefficients for X4 to X10 are zero.
+This means that the Lasso model has identified these four predictors, intercept, X5, X7, X9
+as the most important predictors for explaining the variation in the response variable. 
+The magnitude and sign of the non-zero coefficients give us information about the direction 
+and strength of the relationship between each predictor and the response variable.
+For example, a positive coefficient for X5 means that an increase in the value of X1 is associated with an increase in the response variable.
+"""
