@@ -57,7 +57,7 @@ built_in_MSELoocv = err$delta[1]
 lm.fit =lm(y ~ x, data = generated_data)
 ypred = cbind(rep(1,n),x) %*% coef(lm.fit)
 
-# Leverage of point i with a given formula
+# Calculationg leverage of point i with a given formula
 h = 1/n + ((x - mean(x))^2) / sum((x - mean(x))^2)
 
 # Calculationg MSELoocv with closed form formula
