@@ -27,3 +27,13 @@ scores = solve(loadings) %*% t(scaled_data)
 scores = t(scores)
 scores
 
+#_________________PART C________________________
+#_______________________________________________
+# Goal: Percentage OF Variance
+
+# eigen values i.e. the variance of each component
+eigen_values = eigen(covariance)$values
+
+#percentage of variance explained by each component
+percentage_variance = eigen_values/sum(eigen_values) 
+percentage_variance
