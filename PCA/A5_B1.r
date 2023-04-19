@@ -2,16 +2,7 @@
 #oooooooooooooooooo Problem B1 ooooooooooooooooooooo
 #mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
-
-
-#Final Goal: PCA principal components analysis implementation 
-
-###PCA MY OWN CODE
-
-x= cbind(USArrests$Murder, USArrests$Assault, USArrests$UrbanPop, USArrests$Rape) #data matrix
-xscaled = scale(x, center = TRUE, scale = TRUE) # scaled data
-
-covmat = cov(xscaled) #covariance matrix
+#Final Goal: PCA (principal components analysis implementation) 
 
 #_________________PART A________________________
 #_______________________________________________
@@ -27,4 +18,12 @@ covariance = cov(scaled_data)
 
 loadings = eigen(covariance)$vectors
 loadings
+
+#_________________PART B________________________
+#_______________________________________________
+# Goal: Find scores
+
+scores = solve(loadings) %*% t(scaled_data)
+scores = t(scores)
+scores
 
